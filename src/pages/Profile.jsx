@@ -27,7 +27,7 @@ const Profile = () => {
 
         // 🔥 SERVER SE FRESH DATA LO
         console.log("🔄 Fetching FRESH data from SERVER...");
-        const serverRes = await fetch("https://user-register-server.onrender.com/api/login", {
+        const serverRes = await fetch("https://user-ragiter-server.onrender.com/api/login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email: parsedUser.email })

@@ -8,7 +8,7 @@ import "./Wallet.css";
 
 const USER_API = window.location.hostname === "localhost" 
   ? "http://localhost:5001"
-  : "https://user-register-server.onrender.com";
+  : "https://user-ragiter-server.onrender.com";
 
 const DEPOSIT_API = window.location.hostname === "localhost" 
   ? "http://localhost:5002"

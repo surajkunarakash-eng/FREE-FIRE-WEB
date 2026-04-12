@@ -52,7 +52,7 @@ const Login = () => {
 
       // 2️⃣ Backend Login - ✅ Correct endpoint
       const loginRes = await fetch(
-        "https://user-register-server.onrender.com/api/login",
+        "https://user-ragiter-server.onrender.com/api/login",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

@@ -1,0 +1,337 @@
+:root {
+  --bg-main: #020617;
+  --bg-card: #020617;
+  --bg-alt: #020617;
+  --text-main: #e5e7eb;
+  --text-muted: #9ca3af;
+  --accent-green: #22c55e;
+  --accent-gold: #fbbf24;
+  --accent-orange: #fb923c;
+  --accent-blue: #60a5fa;
+}
+
+/* GLOBAL */
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  background: radial-gradient(circle at top, #111827 0, #020617 45%, #000 100%);
+  color: var(--text-main);
+  overflow: hidden;
+}
+
+/* ROOT LAYOUT */
+.app-root-esports {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-main-esports {
+  flex: 1;
+  max-width: 100%;
+  margin: 0;
+  padding: 65px 12px 90px 12px;
+}
+
+/* TOP BAR */
+.app-topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 56px;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(15, 23, 42, 0.96);
+  border-bottom: 1px solid rgba(31, 41, 55, 0.9);
+  backdrop-filter: blur(18px);
+  z-index: 30;
+}
+
+/* HERO - HOME PAGE */
+.hero {
+  grid-template-columns: 1fr;
+  gap: 8px;
+  padding: 0;
+  margin-bottom: 12px;
+}
+
+.hero-left h1 {
+  font-size: 26px;
+  margin: 0 0 8px 0;
+  background: linear-gradient(135deg, var(--accent-green), var(--accent-gold));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 800;
+}
+
+/* ALL TOURNAMENTS BUTTON */
+.all-tour-wrapper {
+  position: relative;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.hero-btn-primary, .all-tour-btn {
+  padding: 10px 16px !important;
+  border-radius: 12px !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  background: linear-gradient(135deg, var(--accent-green), var(--accent-gold)) !important;
+  border: none !important;
+  color: #020617 !important;
+  box-shadow: 0 4px 16px rgba(34, 197, 94, 0.3) !important;
+  width: auto !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+}
+
+.all-tour-arrow {
+  font-size: 10px !important;
+  transition: transform 0.2s ease-out !important;
+}
+
+.all-tour-arrow.open {
+  transform: rotate(180deg);
+}
+
+.all-tour-dropdown {
+  position: absolute;
+  top: 110%;
+  left: 0;
+  min-width: 160px;
+  background: rgba(15, 23, 42, 0.98);
+  border-radius: 10px;
+  border: 1px solid rgba(31, 41, 55, 0.9);
+  box-shadow: 0 8px 25px rgba(15, 23, 42, 0.9);
+  padding: 6px 4px;
+  z-index: 15;
+}
+
+.all-tour-item {
+  width: 100%;
+  padding: 8px 12px;
+  background: transparent;
+  border: none;
+  color: var(--text-main);
+  font-size: 13px;
+  text-align: left;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.all-tour-item:hover {
+  background: linear-gradient(135deg, var(--accent-green), var(--accent-gold));
+  color: #020617;
+}
+
+/* HOME TOURNAMENTS */
+.tournaments-section {
+  max-height: 65vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  margin-top: 0;
+  padding: 0 4px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.tournaments-section::-webkit-scrollbar {
+  display: none;
+}
+
+.tour-grid-wrapper {
+  height: 100%;
+  padding-bottom: 20px;
+}
+
+.tour-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 0 4px;
+}
+
+.tour-card {
+  background: rgba(15, 23, 42, 0.95);
+  border-radius: 18px;
+  padding: 22px 20px;
+  border: 1px solid rgba(31, 41, 55, 0.95);
+  box-shadow: 0 8px 32px rgba(15, 23, 42, 0.9);
+  font-size: 14px;
+  width: 100%;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin: 0 2px;
+}
+
+/* 🔥 MY MATCHES PAGE - UNHIDE & PERFECT STYLE */
+.mymatches-page {
+  min-height: 100vh;
+  background: radial-gradient(circle at top, #111827 0, #020617 45%, #000 100%);
+  padding: 72px 12px 110px;
+  color: var(--text-main);
+}
+
+.mymatches-container {
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.page-header h1 {
+  font-size: 28px;
+  margin: 0 0 8px 0;
+  background: linear-gradient(135deg, var(--accent-green), var(--accent-gold));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 800;
+}
+
+.page-header p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+/* 🔥 MATCHES GRID - UNHIDDEN & PERFECT */
+.matches-grid {
+  display: flex !important; /* 🔥 FIXED! */
+  flex-direction: column;
+  gap: 14px;
+}
+
+.match-card {
+  background: rgba(15, 23, 42, 0.95);
+  border-radius: 16px;
+  padding: 18px;
+  border: 1px solid rgba(31, 41, 55, 0.95);
+  box-shadow: 0 8px 32px rgba(15, 23, 42, 0.8);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.match-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(34, 197, 94, 0.2);
+}
+
+.match-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.match-header h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-main);
+  margin: 0;
+  line-height: 1.3;
+}
+
+.status {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.status.registered {
+  background: rgba(34, 197, 94, 0.2);
+  color: var(--accent-green);
+  border: 1px solid rgba(34, 197, 94, 0.4);
+}
+
+.match-details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.detail-row span:first-child {
+  font-weight: 500;
+}
+
+.highlight {
+  color: var(--accent-blue);
+  font-weight: 600;
+}
+
+.prize-pool {
+  color: var(--accent-gold) !important;
+  font-weight: 700 !important;
+  font-size: 14px !important;
+}
+
+.room-box {
+  background: rgba(34, 197, 94, 0.1);
+  padding: 12px;
+  border-radius: 12px;
+  margin-top: 8px;
+  border: 1px solid rgba(34, 197, 94, 0.2);
+}
+
+.no-matches {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-muted);
+}
+
+.no-matches h2 {
+  font-size: 24px;
+  color: var(--text-main);
+  margin: 0 0 8px;
+}
+
+.loading-text {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--accent-green);
+  font-size: 16px;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .app-main-esports {
+    padding: 62px 8px 85px 8px;
+  }
+  
+  .mymatches-page {
+    padding: 72px 8px 100px;
+  }
+}
+
+/* 🔥 HIDE ONLY HOME UNUSED */
+.category-row,
+.filter-row,
+.details-grid,
+.profile-grid {
+  display: none !important;
+}

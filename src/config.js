@@ -1,0 +1,5 @@
+// src/config.js  (BGMI APP)
+export const API_BASE =
+  process.env.REACT_APP_API_URL || "http://localhost:5000";
+
+export const ADMIN_TOKEN = "supersecretadmin123";

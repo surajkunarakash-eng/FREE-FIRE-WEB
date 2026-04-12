@@ -1,0 +1,24 @@
+/* Home page me sirf tournament cards scroll */
+.section.tournament-section {
+  margin-top: 10px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+/* Tournament cards wala scroll container */
+.tour-scroll-container {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 6px 0 16px;
+}
+
+/* Optional: scrollbar hide */
+.tour-scroll-container::-webkit-scrollbar {
+  width: 0;
+}
+.tour-scroll-container {
+  scrollbar-width: none;
+}

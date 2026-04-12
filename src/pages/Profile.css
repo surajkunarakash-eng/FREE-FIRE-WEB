@@ -1,0 +1,138 @@
+/* Profile.css - MAIN CSS KE SAATH COMPATIBLE */
+.esports-profile {
+  background: radial-gradient(circle at top, #111827 0, #020617 45%, #000 100%);
+  color: var(--text-main);
+  min-height: 100vh;
+  padding: 72px 16px 120px; /* 🔥 Topbar + Bottom nav space */
+  overflow: hidden; /* Main CSS ke saath sync */
+}
+
+/* 🔥 PROFILE CONTAINER - CENTERED + PERFECT */
+.profile-container {
+  max-width: 420px;
+  margin: 0 auto;
+  height: calc(100vh - 192px); /* Top 72px + Bottom 120px */
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.profile-container::-webkit-scrollbar {
+  display: none;
+}
+
+.profile-header {
+  text-align: center;
+  padding: 20px 0;
+}
+
+.player-card {
+  background: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(20px);
+  border-radius: 24px;
+  padding: 30px 24px;
+  border: 1px solid rgba(31, 41, 55, 0.95);
+  box-shadow: 0 12px 40px rgba(15, 23, 42, 0.9);
+  margin-bottom: 32px;
+}
+
+.avatar-circle {
+  width: 100px;
+  height: 100px;
+  margin: 0 auto 20px;
+  border-radius: 50%;
+  border: 4px solid var(--accent-blue);
+  overflow: hidden;
+  box-shadow: 0 8px 25px rgba(96, 165, 250, 0.3);
+}
+
+.avatar-circle img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.gamer-name {
+  font-size: 24px;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--accent-green), var(--accent-gold));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0 0 12px;
+  letter-spacing: -0.02em;
+}
+
+.id-row {
+  font-size: 14px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-weight: 600;
+}
+
+.id-row strong {
+  color: var(--accent-blue);
+  font-size: 16px;
+}
+
+/* 🔥 PERFECT BANK BUTTON */
+.profile-action {
+  display: flex;
+  justify-content: center;
+  padding: 0 12px;
+}
+
+.bank-btn {
+  background: linear-gradient(135deg, var(--accent-orange), var(--accent-gold));
+  color: #020617;
+  border: none;
+  padding: 14px 32px;
+  border-radius: 50px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 8px 25px rgba(251, 146, 60, 0.4);
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  min-width: 280px;
+  position: relative;
+  overflow: hidden;
+}
+
+.bank-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 35px rgba(251, 146, 60, 0.6);
+}
+
+.bank-btn:active {
+  transform: translateY(-1px);
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .esports-profile {
+    padding: 72px 12px 110px;
+  }
+  
+  .profile-container {
+    height: calc(100vh - 182px);
+    max-width: 100%;
+  }
+  
+  .avatar-circle {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .gamer-name {
+    font-size: 22px;
+  }
+  
+  .bank-btn {
+    padding: 12px 28px;
+    font-size: 14px;
+    min-width: 260px;
+  }
+}

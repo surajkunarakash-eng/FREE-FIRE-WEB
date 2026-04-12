@@ -17,7 +17,7 @@ const TournamentCard = ({ t }) => {
   const API_URL =
     window.location.hostname === "localhost"
       ? "http://localhost:5002"
-      : "https://deposit-and-join-tournament-server.onrender.com";
+      : "https://freefire-server-t.onrender.com";
 
   const getBgmiIdForTournament = useCallback(() => {
     try {

@@ -7,7 +7,7 @@ import "./Withdraw.css";
 
 const BALANCE_API = window.location.hostname === "localhost" 
   ? "http://localhost:5002"
-  : "https://deposit-and-join-tournament-server.onrender.com";
+  : "https://freefire-server-t.onrender.com";
 
 const WALLET_API = window.location.hostname === "localhost" 
   ? "http://localhost:5003"

@@ -5,7 +5,7 @@ import "./DepositQR.css";
 const DEPOSIT_API =
   window.location.hostname === "localhost"
     ? "http://localhost:5002"
-    : "https://deposit-and-join-tournament-server.onrender.com";
+    : "https://freefire-server-t.onrender.com";
 
 export default function DepositQR() {
   const location = useLocation();

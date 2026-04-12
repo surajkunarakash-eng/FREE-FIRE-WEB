@@ -12,7 +12,7 @@ const USER_API = window.location.hostname === "localhost"
 
 const DEPOSIT_API = window.location.hostname === "localhost" 
   ? "http://localhost:5002"
-  : "https://deposit-and-join-tournament-server.onrender.com";
+  : "https://freefire-server-t.onrender.com";
 
 const Wallet = () => {
   const navigate = useNavigate();

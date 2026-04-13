@@ -1,4 +1,4 @@
-// src/pages/MyMatches.jsx - 🔥 SIMPLE LOADING + SILENT REFRESH!
+// src/pages/MyMatches.jsx
 import { useState, useEffect, useCallback, useRef } from "react";
 import "./MyMatches.css";
 import BackButton from "../components/BackButton";
@@ -18,11 +18,17 @@ const MyMatches = () => {
       const tournamentJoins = JSON.parse(
         localStorage.getItem("tournamentJoins") || "[]"
       );
+
       const uniqueIds = [...new Set(tournamentJoins.map((join) => join.bgmiId))];
+
       const fallback =
         localStorage.getItem("tempBgmiId") ||
         localStorage.getItem("lastBgmiId");
-      if (fallback && !uniqueIds.includes(fallback)) uniqueIds.push(fallback);
+
+      if (fallback && !uniqueIds.includes(fallback)) {
+        uniqueIds.push(fallback);
+      }
+
       return uniqueIds.filter(Boolean);
     } catch {
       return [
@@ -30,6 +36,19 @@ const MyMatches = () => {
           localStorage.getItem("lastBgmiId"),
       ].filter(Boolean);
     }
+  };
+
+  const normalizeMatches = (matches) => {
+    const uniqueMap = new Map();
+
+    matches.forEach((match) => {
+      if (!match?.id) return;
+      uniqueMap.set(match.id, match);
+    });
+
+    return Array.from(uniqueMap.values()).sort(
+      (a, b) => new Date(b.joined_at) - new Date(a.joined_at)
+    );
   };
 
   const fetchMatchesInitial = useCallback(async () => {
@@ -51,9 +70,7 @@ const MyMatches = () => {
 
       const allMatchesArrays = await Promise.all(allMatchesPromises);
       const allMatchesFlat = allMatchesArrays.flat();
-      const sortedMatches = allMatchesFlat.sort(
-        (a, b) => new Date(b.joined_at) - new Date(a.joined_at)
-      );
+      const sortedMatches = normalizeMatches(allMatchesFlat);
 
       setAllMatches(sortedMatches);
     } catch (err) {
@@ -66,8 +83,6 @@ const MyMatches = () => {
   }, [API_URL]);
 
   const fetchMatchesSilently = useCallback(async () => {
-    if (hasLoadedRef.current && allMatches.length > 0) return;
-
     const bgmiIds = getAllBgmiIds();
     if (bgmiIds.length === 0) return;
 
@@ -80,9 +95,7 @@ const MyMatches = () => {
 
       const allMatchesArrays = await Promise.all(allMatchesPromises);
       const allMatchesFlat = allMatchesArrays.flat();
-      const sortedMatches = allMatchesFlat.sort(
-        (a, b) => new Date(b.joined_at) - new Date(a.joined_at)
-      );
+      const sortedMatches = normalizeMatches(allMatchesFlat);
 
       setAllMatches((prevMatches) => {
         if (JSON.stringify(prevMatches) === JSON.stringify(sortedMatches)) {
@@ -93,7 +106,7 @@ const MyMatches = () => {
     } catch (err) {
       console.error("Silent fetch error:", err);
     }
-  }, [API_URL, allMatches.length]);
+  }, [API_URL]);
 
   useEffect(() => {
     fetchMatchesInitial();
@@ -104,7 +117,6 @@ const MyMatches = () => {
     return () => clearInterval(interval);
   }, [fetchMatchesSilently]);
 
-  // 🔥 SIMPLE NORMAL LOADING
   if (isInitialLoading) {
     return (
       <div className="mymatches-page">
@@ -119,6 +131,7 @@ const MyMatches = () => {
   return (
     <div className="mymatches-page">
       <BackButton fallbackPath="/" />
+
       <div className="mymatches-container">
         <div className="page-header">
           <h1>मेरे मैच</h1>
@@ -129,70 +142,97 @@ const MyMatches = () => {
 
         {allMatches.length > 0 ? (
           <div className="matches-grid">
-            {allMatches.map((match) => (
-              <div key={match.id} className="match-card">
-                <div className="match-header">
-                  <h3>{match.tournament_name}</h3>
-                  <span className="status registered">Registered</span>
-                </div>
+            {allMatches.map((match) => {
+              const winnerPrize =
+                match.winner_prize ??
+                match.winnerPrize ??
+                match.prize_pool ??
+                match.prizePool;
 
-                <div className="match-details">
-                  <div className="detail-row">
-                    <span>Player:</span>
-                    <span className="highlight">{match.player_name}</span>
+              const roomId = match.room_id ?? match.roomId ?? "";
+              const roomPassword =
+                match.room_password ?? match.roomPassword ?? "";
+
+              return (
+                <div key={match.id} className="match-card">
+                  <div className="match-header">
+                    <h3>{match.tournament_name || "Tournament"}</h3>
+                    <span className="status registered">Registered</span>
                   </div>
 
-                  <div className="detail-row">
-                    <span>BGMI ID:</span>
-                    <span className="highlight">{match.bgmi_id}</span>
-                  </div>
-
-                  <div className="detail-row">
-                    <span>Entry:</span>
-                    {/* agar entry_fee undefined/null hai to empty string, 0 ko bhi avoid kiya */}
-                    <span>
-                      {match.entry_fee != null && match.entry_fee !== ""
-                        ? `₹${match.entry_fee}`
-                        : "-"}
-                    </span>
-                  </div>
-
-                  {/* 🔥 PRIZE ROW COMPLETELY REMOVED FROM CARD
-                  <div className="detail-row">
-                    <span>Prize:</span>
-                    <span className="prize-pool">₹{match.prize_pool || 0}</span>
-                  </div>
-                  */}
-
-                  <div className="detail-row">
-                    <span>Date:</span>
-                    <span>{match.date}</span>
-                  </div>
-
-                  <div className="detail-row">
-                    <span>Time:</span>
-                    <span>{match.time}</span>
-                  </div>
-
-                  {match.room_id ? (
-                    <div className="room-box">
-                      <div className="detail-row">
-                        <span>Room ID:</span>
-                        <strong>{match.room_id}</strong>
-                      </div>
-                      <div className="detail-row">
-                        <span>Password:</span>
-                        <strong>{match.room_password}</strong>
-                      </div>
+                  <div className="match-details">
+                    <div className="detail-row">
+                      <span>Player:</span>
+                      <span className="highlight">
+                        {match.player_name || "-"}
+                      </span>
                     </div>
-                  ) : (
-                    <div className="room-pending">
-                      ⏳ Room details coming soon
+
+                    <div className="detail-row">
+                      <span>BGMI ID:</span>
+                      <span className="highlight">{match.bgmi_id || "-"}</span>
                     </div>
-                  )}
+
+                    <div className="detail-row">
+                      <span>Entry:</span>
+                      <span>
+                        {match.entry_fee != null && match.entry_fee !== ""
+                          ? `₹${match.entry_fee}`
+                          : "-"}
+                      </span>
+                    </div>
+
+                    {winnerPrize != null && winnerPrize !== "" && (
+                      <div className="detail-row">
+                        <span>Winner Prize:</span>
+                        <span className="highlight">₹{winnerPrize}</span>
+                      </div>
+                    )}
+
+                    {match.map && (
+                      <div className="detail-row">
+                        <span>Map:</span>
+                        <span>{match.map}</span>
+                      </div>
+                    )}
+
+                    {match.mode && (
+                      <div className="detail-row">
+                        <span>Mode:</span>
+                        <span>{match.mode}</span>
+                      </div>
+                    )}
+
+                    <div className="detail-row">
+                      <span>Date:</span>
+                      <span>{match.date || "-"}</span>
+                    </div>
+
+                    <div className="detail-row">
+                      <span>Time:</span>
+                      <span>{match.time || "-"}</span>
+                    </div>
+
+                    {roomId ? (
+                      <div className="room-box">
+                        <div className="detail-row">
+                          <span>Room ID:</span>
+                          <strong>{roomId}</strong>
+                        </div>
+                        <div className="detail-row">
+                          <span>Password:</span>
+                          <strong>{roomPassword || "-"}</strong>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="room-pending">
+                        ⏳ Room details coming soon
+                      </div>
+                    )}
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         ) : (
           <div className="no-matches">

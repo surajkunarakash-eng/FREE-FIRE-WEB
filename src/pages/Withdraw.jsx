@@ -11,7 +11,7 @@ const BALANCE_API = window.location.hostname === "localhost"
 
 const WALLET_API = window.location.hostname === "localhost" 
   ? "http://localhost:5003"
-  : "https://withdraw-server.onrender.com";
+  : "https://bank-details-save.onrender.com";
 
 const Withdraw = () => {
   const navigate = useNavigate();

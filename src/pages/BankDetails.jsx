@@ -4,6 +4,12 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "../supabaseClient";
 import "./BankDetails.css";
 
+// ✅ FINAL API URL CONFIG
+const API_BASE_URL =
+  window.location.hostname === "localhost"
+    ? "http://localhost:5003"
+    : "https://bank-details-save.onrender.com";
+
 const BankDetails = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -112,7 +118,6 @@ const BankDetails = () => {
     setLoading(true);
 
     try {
-      // ✅ ALWAYS REAL NAME - REQUIRED FIELD
       const profileName = realProfileName?.trim() || "Unknown Player";
 
       const cleanAccountHolder = bankData.account_holder.trim();
@@ -121,16 +126,13 @@ const BankDetails = () => {
       const cleanUpi = bankData.upi_id?.trim() ? bankData.upi_id.trim() : null;
       const cleanIfsc = bankData.ifsc_code.trim().toUpperCase();
 
-      // ✅ Validation
       if (!cleanAccountHolder || !cleanAccountNumber || !cleanBankName || !cleanIfsc) {
         return alert("❌ Fill all required fields!");
       }
 
-      // ✅ search tags safe
       const firstName = cleanAccountHolder.split(" ")[0] || "";
       const searchTags = [cleanBankName, firstName, profileName].filter(Boolean);
 
-      // 🔥 INSTANT AUTO VERIFY - is_verified: true!
       const payload = {
         user_id: userId,
         profile_name: profileName,
@@ -140,13 +142,13 @@ const BankDetails = () => {
         upi_id: cleanUpi,
         ifsc_code: cleanIfsc,
         is_active: true,
-        is_verified: true,  // ✅ AUTO APPROVED!
+        is_verified: true,
         search_tags: searchTags,
       };
 
       console.log("💾 AUTO-VERIFY PAYLOAD:", payload);
+      console.log("🌐 API URL:", API_BASE_URL);
 
-      // ✅ Check existing record
       const { data: existing, error: existErr } = await supabase
         .from("user_bank_details")
         .select("id, is_verified")
@@ -164,7 +166,6 @@ const BankDetails = () => {
       let result;
 
       if (existing?.id) {
-        // UPDATE existing
         result = await supabase
           .from("user_bank_details")
           .update(payload)
@@ -172,7 +173,6 @@ const BankDetails = () => {
           .select()
           .maybeSingle();
       } else {
-        // INSERT new
         result = await supabase
           .from("user_bank_details")
           .insert([payload])
@@ -183,16 +183,23 @@ const BankDetails = () => {
       if (result.error) throw new Error(result.error.message);
 
       console.log("✅ INSTANT APPROVED:", result.data);
-      
-      // 🔥 INSTANT APPROVED MESSAGE
-      alert("✅ Bank Details SAVED & APPROVED! ✅\nTurant withdraw kar sakte ho! 💰🚀");
-      
-      setSuccess(true); // UI update
-      
-      setTimeout(() => {
-        navigate("/withdraw"); // Direct withdraw page!
-      }, 1500);
 
+      // ✅ OPTIONAL BACKEND HIT ON RENDER / LOCAL
+      try {
+        await fetch(`${API_BASE_URL}/`, {
+          method: "GET",
+        });
+      } catch (apiErr) {
+        console.log("Backend ping error:", apiErr.message);
+      }
+
+      alert("✅ Bank Details SAVED & APPROVED! ✅\nTurant withdraw kar sakte ho! 💰🚀");
+
+      setSuccess(true);
+
+      setTimeout(() => {
+        navigate("/withdraw");
+      }, 1500);
     } catch (error) {
       console.error("❌ SAVE ERROR:", error);
       alert("❌ Error: " + error.message);
@@ -212,17 +219,15 @@ const BankDetails = () => {
 
             <h1 className="card-title">Bank Details</h1>
 
-            {/* ✅ SHOW REAL NAME & USER ID */}
             <p className="card-subtitle">
-              Profile: <b>{realProfileName || "Loading..."}</b> 
-              <span style={{ fontSize: '0.9em', opacity: 0.8 }}>
+              Profile: <b>{realProfileName || "Loading..."}</b>
+              <span style={{ fontSize: "0.9em", opacity: 0.8 }}>
                 (ID: {userId})
               </span>
             </p>
           </div>
 
           <form className="bank-form" onSubmit={handleSubmit}>
-            {/* ACCOUNT HOLDER */}
             <div className="form-group">
               <label className="form-label">
                 <span className="label-icon">👤</span>
@@ -241,7 +246,6 @@ const BankDetails = () => {
               />
             </div>
 
-            {/* ACCOUNT NUMBER */}
             <div className="form-group">
               <label className="form-label">
                 <span className="label-icon">🔢</span>
@@ -264,7 +268,6 @@ const BankDetails = () => {
               />
             </div>
 
-            {/* BANK NAME */}
             <div className="form-group">
               <label className="form-label">
                 <span className="label-icon">🏦</span>
@@ -289,7 +292,6 @@ const BankDetails = () => {
               </select>
             </div>
 
-            {/* UPI */}
             <div className="form-group">
               <label className="form-label">
                 <span className="label-icon">📱</span>
@@ -307,7 +309,6 @@ const BankDetails = () => {
               />
             </div>
 
-            {/* IFSC */}
             <div className="form-group">
               <label className="form-label">
                 <span className="label-icon">🔑</span>
